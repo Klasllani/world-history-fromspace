@@ -1,0 +1,114 @@
+/* styles.css — /lit/ Burichan, minimalist */
+
+body{
+  background:#eef2ff;
+  color:#000;
+  font-family:"Times New Roman", Georgia, serif;
+  font-size:16px;
+  line-height:1.4;
+  margin:0;
+  padding:0 14px 50px;
+}
+.page{ max-width:700px; margin:0 auto; }
+
+/* title */
+.board-title{
+  text-align:center;
+  color:#af0a0f;
+  font-weight:bold;
+  font-size:2.5rem;
+  margin:26px 0 4px;
+}
+.tagline{
+  text-align:center;
+  color:#555;
+  font-size:.95rem;
+  margin:0;
+}
+hr{
+  border:0;
+  border-top:1px solid #b7c5d9;
+  margin:16px 0;
+}
+
+/* greentext */
+.greentext{
+  color:#789922;
+  margin:14px 0;
+}
+
+/* section + group headings */
+.section h2{
+  color:#0f0c5d;
+  font-size:1.5rem;
+  font-weight:bold;
+  margin:6px 0 10px;
+}
+.group{
+  color:#117743;
+  font-size:1.05rem;
+  font-weight:bold;
+  margin:18px 0 4px;
+}
+
+/* document lists */
+.docs{
+  list-style:none;
+  margin:0 0 6px;
+  padding:0;
+}
+.docs li{ padding:3px 0; }
+.docs .sub{ margin:3px 0 0; padding-left:22px; }
+.soon{ color:#707070; }
+
+/* click-me callout box */
+.click-arrow{
+  display:block;
+  width:150px;
+  height:74px;
+  margin:8px 0 -8px 12px;
+}
+.click-box{
+  position:relative;
+  display:block;
+  width:75%;
+  box-sizing:border-box;
+  margin:0;
+  padding:14px;
+  border:2px solid #af0a0f;
+  border-radius:6px;
+  background:#fff7f7;
+  text-decoration:none;
+  text-align:center;
+}
+.click-box img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.click-box .click-text{
+  display:block;
+  margin-bottom:8px;
+  color:#af0a0f;
+  font-weight:bold;
+}
+.docs a{
+  color:#34345c;
+  text-decoration:underline;
+}
+.docs a:hover{ color:#dd0000; }
+.meta{
+  color:#707070;
+  font-size:.85rem;
+}
+
+/* note + footer */
+.note{ font-size:.9rem; margin:12px 0 0; }
+.note a{ color:#34345c; }
+.note a:hover{ color:#dd0000; }
+.footer{
+  text-align:center;
+  color:#707070;
+  font-size:.85rem;
+  margin:10px 0 0;
+}
