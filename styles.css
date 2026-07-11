@@ -19,22 +19,10 @@ body{
   font-size:2.5rem;
   margin:26px 0 4px;
 }
-.tagline{
-  text-align:center;
-  color:#555;
-  font-size:.95rem;
-  margin:0;
-}
 hr{
   border:0;
   border-top:1px solid #b7c5d9;
   margin:16px 0;
-}
-
-/* greentext */
-.greentext{
-  color:#789922;
-  margin:14px 0;
 }
 
 /* section + group headings */
@@ -100,15 +88,4 @@ hr{
 .meta{
   color:#707070;
   font-size:.85rem;
-}
-
-/* note + footer */
-.note{ font-size:.9rem; margin:12px 0 0; }
-.note a{ color:#34345c; }
-.note a:hover{ color:#dd0000; }
-.footer{
-  text-align:center;
-  color:#707070;
-  font-size:.85rem;
-  margin:10px 0 0;
 }
