@@ -11,7 +11,6 @@ body{
 }
 .page{ max-width:700px; margin:0 auto; }
 
-/* title */
 .board-title{
   text-align:center;
   color:#af0a0f;
@@ -25,7 +24,6 @@ hr{
   margin:16px 0;
 }
 
-/* section + group headings */
 .section h2{
   color:#0f0c5d;
   font-size:1.5rem;
@@ -39,17 +37,17 @@ hr{
   margin:18px 0 4px;
 }
 
-/* document lists */
 .docs{
   list-style:none;
   margin:0 0 6px;
   padding:0;
 }
 .docs li{ padding:3px 0; }
+.docs.spaced > li{ padding:6px 0; }
+.docs.spaced .sub li{ padding:2px 0; font-size:.95rem; }
 .docs .sub{ margin:3px 0 0; padding-left:22px; }
 .soon{ color:#707070; }
 
-/* click-me callout box */
 .click-arrow{
   display:block;
   width:150px;
