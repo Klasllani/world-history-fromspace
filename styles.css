@@ -43,7 +43,7 @@ hr{
   padding:0;
 }
 .docs li{ padding:3px 0; }
-.docs.spaced > li{ padding:5px 0; }
+.docs.spaced > li{ padding:6px 0; }
 .docs.spaced .sub li{ padding:2px 0; font-size:.95rem; }
 .docs .sub{ margin:3px 0 0; padding-left:22px; }
 .soon{ color:#707070; }
