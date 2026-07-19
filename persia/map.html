@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet.photon.css">
+        <style>
+        #map {
+            width: 1621px;
+            height: 910px;
+        }
+        #map-title {
+            position: fixed;
+            bottom: 24px;
+            right: 12px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid #888;
+            border-radius: 6px;
+            padding: 6px 16px;
+            font-family: "Times New Roman", Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #222;
+            pointer-events: none;      
+        }  
+        </style>
+        <title>The Persian Conquests, 550–510 BCE</title>
+    </head>
+    <body>
+        <div id="map-title">The Near East, 550&ndash;510 BCE</div>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.photon.js"></script>
+        <script src="data/Factions_1.js"></script>
+        <script src="data/Sites_2.js"></script>
+        <script src="data/Battles_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[31.117352131716252,30.698789869226424],[46.68880141884484,66.63246808518312]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/qgis2web/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // modify popup if contains media
+        function addClassToPopupIfMedia(content, popup) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            var imgTd = tempDiv.querySelector('td img');
+            if (imgTd) {
+                var src = imgTd.getAttribute('src');
+                if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
+                    popup._contentNode.classList.add('media');
+                    var img = popup._contentNode.querySelector('td img');
+                    if (img) {
+                        // If already loaded (cache), update immediately
+                        if (img.complete && img.naturalHeight > 0) {
+                            popup.update();
+                        } else {
+                            img.addEventListener('load', function() {
+                                popup.update();
+                            });
+                            img.addEventListener('error', function() {
+                                popup.update();
+                            });
+                        }
+                    }
+                } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
+                    var audio = document.createElement('audio');
+                    audio.controls = true;
+                    audio.src = src;
+                    imgTd.parentNode.replaceChild(audio, imgTd);
+                    popup._contentNode.classList.add('media');
+                    setTimeout(function() {
+                        popup.setContent(tempDiv.innerHTML);
+                        popup.update();
+                    }, 10);
+                } else if (/\.(mp4|webm|ogg|mov)$/i.test(src)) {
+                    var video = document.createElement('video');
+                    video.controls = true;
+                    video.src = src;
+                    video.style.width = "400px";
+                    video.style.height = "300px";
+                    video.style.maxHeight = "60vh";
+                    video.style.maxWidth = "60vw";
+                    imgTd.parentNode.replaceChild(video, imgTd);
+                    popup._contentNode.classList.add('media');
+                    // Aggiorna il popup quando il video carica i metadati
+                    video.addEventListener('loadedmetadata', function() {
+                        popup.update();
+                    });
+                    setTimeout(function() {
+                        popup.setContent(tempDiv.innerHTML);
+                        popup.update();
+                    }, 10);
+                } else {
+                    popup._contentNode.classList.remove('media');
+                }
+            } else {
+                popup._contentNode.classList.remove('media');
+            }
+        }
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_ESRIShadedRelief_0');
+        map.getPane('pane_ESRIShadedRelief_0').style.zIndex = 400;
+        var layer_ESRIShadedRelief_0 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_ESRIShadedRelief_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_ESRIShadedRelief_0;
+        map.addLayer(layer_ESRIShadedRelief_0);
+        function pop_Factions_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>name</strong><br />' + (feature.properties['name'] !== null ? autolinker.link(String(feature.properties['name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Factions_1_0(feature) {
+            switch(String(feature.properties['name'])) {
+                case 'Neo-Babylonian Empire':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,12,12,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Saite Egypt':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,242,0,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Kingdom of Lydia':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,179,1,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Achaemenid Empire':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(55,45,255,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Futher Greek Colonies':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,144,137,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Greeks':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,144,137,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Magna Graecia':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,144,137,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Cyrene':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,144,137,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Thracians':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(56,128,54,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,175,74,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'Scythians':
+                    return {
+                pane: 'pane_Factions_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,125,121,1.0)',
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Factions_1');
+        map.getPane('pane_Factions_1').style.zIndex = 401;
+        map.getPane('pane_Factions_1').style['mix-blend-mode'] = 'normal';
+        var layer_Factions_1 = new L.geoJson(json_Factions_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Factions_1',
+            layerName: 'layer_Factions_1',
+            pane: 'pane_Factions_1',
+            onEachFeature: pop_Factions_1,
+            style: style_Factions_1_0,
+        });
+        bounds_group.addLayer(layer_Factions_1);
+        map.addLayer(layer_Factions_1);
+        function pop_Sites_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>name</strong><br />' + (feature.properties['name'] !== null ? autolinker.link(String(feature.properties['name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">type</th>\
+                        <td class="visible-with-data" id="type">' + (feature.properties['type'] !== null ? autolinker.link(String(feature.properties['type']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['notes'] !== null ? autolinker.link(String(feature.properties['notes']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Sites_2_0() {
+            return {
+                pane: 'pane_Sites_2',
+                radius: 7.600000000000001,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,0,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sites_2');
+        map.getPane('pane_Sites_2').style.zIndex = 402;
+        map.getPane('pane_Sites_2').style['mix-blend-mode'] = 'normal';
+        var layer_Sites_2 = new L.geoJson(json_Sites_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sites_2',
+            layerName: 'layer_Sites_2',
+            pane: 'pane_Sites_2',
+            onEachFeature: pop_Sites_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Sites_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Sites_2);
+        map.addLayer(layer_Sites_2);
+        function pop_Battles_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>name</strong><br />' + (feature.properties['name'] !== null ? autolinker.link(String(feature.properties['name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="year_bce" colspan="2"><strong>year_bce</strong><br />' + (feature.properties['year_bce'] !== null ? autolinker.link(String(feature.properties['year_bce']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['notes'] !== null ? autolinker.link(String(feature.properties['notes']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Battles_3_0() {
+            return {
+                pane: 'pane_Battles_3',
+                shape: 'diamond',
+                radius: 11.200000000000003,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Battles_3');
+        map.getPane('pane_Battles_3').style.zIndex = 403;
+        map.getPane('pane_Battles_3').style['mix-blend-mode'] = 'normal';
+        var layer_Battles_3 = new L.geoJson(json_Battles_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Battles_3',
+            layerName: 'layer_Battles_3',
+            pane: 'pane_Battles_3',
+            onEachFeature: pop_Battles_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_Battles_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Battles_3);
+        map.addLayer(layer_Battles_3);
+        var overlaysTree = [
+            {label: '<img src="legend/Battles_3.png" /> Battles', layer: layer_Battles_3},
+            {label: '<img src="legend/Sites_2.png" /> Sites', layer: layer_Sites_2},
+            {label: 'Factions<br /><table><tr><td style="text-align: center;"><img src="legend/Factions_1_NeoBabylonianEmpire0.png" /></td><td>Neo-Babylonian Empire</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_SaiteEgypt1.png" /></td><td>Saite Egypt</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_KingdomofLydia2.png" /></td><td>Kingdom of Lydia</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_AchaemenidEmpire3.png" /></td><td>Achaemenid Empire</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_FutherGreekColonies4.png" /></td><td>Futher Greek Colonies</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_Greeks5.png" /></td><td>Greeks</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_MagnaGraecia6.png" /></td><td>Magna Graecia</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_Cyrene7.png" /></td><td>Cyrene</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_Thracians8.png" /></td><td>Thracians</td></tr><tr><td style="text-align: center;"><img src="legend/Factions_1_Scythians9.png" /></td><td>Scythians</td></tr></table>', layer: layer_Factions_1},
+            {label: "ESRI Shaded Relief", layer: layer_ESRIShadedRelief_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        lay.addTo(map);
+		document.addEventListener("DOMContentLoaded", function() {
+            // set new Layers List height which considers toggle icon
+            function newLayersListHeight() {
+                var layerScrollbarElement = document.querySelector('.leaflet-control-layers-scrollbar');
+                if (layerScrollbarElement) {
+                    var layersListElement = document.querySelector('.leaflet-control-layers-list');
+                    var originalHeight = layersListElement.style.height 
+                        || window.getComputedStyle(layersListElement).height;
+                    var newHeight = parseFloat(originalHeight) - 50;
+                    layersListElement.style.height = newHeight + 'px';
+                }
+            }
+            var isLayersListExpanded = true;
+            var controlLayersElement = document.querySelector('.leaflet-control-layers');
+            var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle');
+            // toggle Collapsed/Expanded and apply new Layers List height
+            toggleLayerControl.addEventListener('click', function() {
+                if (isLayersListExpanded) {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                } else {
+                    controlLayersElement.classList.add('leaflet-control-layers-expanded');
+                }
+                isLayersListExpanded = !isLayersListExpanded;
+                newLayersListHeight()
+            });	
+			// apply new Layers List height if toggle layerstree
+			if (controlLayersElement) {
+				controlLayersElement.addEventListener('click', function(event) {
+					var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+					if (toggleLayerHeaderPointer) {
+						newLayersListHeight();
+					}
+				});
+			}
+            // Collapsed/Expanded at Start to apply new height
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            // Collapsed touch/small screen
+            var isSmallScreen = window.innerWidth < 650;
+            if (isSmallScreen) {
+                setTimeout(function() {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                    isLayersListExpanded = !isLayersListExpanded;
+                }, 500);
+            }  
+        });       
+        setBounds();
+        var i = 0;
+        layer_Factions_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['name'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Factions_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Factions_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Factions_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Factions_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Factions_1]);
+        });
+        </script>
+    </body>
+</html>
