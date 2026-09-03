@@ -82,6 +82,13 @@ hr {
   padding-left: 22px;
 }
 
+.arrow {
+  color: #000;
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 1.05em;
+}
+
 .docs a {
   color: #34345c;
   text-decoration: underline;
