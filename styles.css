@@ -46,44 +46,13 @@ hr{
 .docs.spaced > li{ padding:6px 0; }
 .docs.spaced .sub li{ padding:2px 0; font-size:.95rem; }
 .docs .sub{ margin:3px 0 0; padding-left:22px; }
-.soon{ color:#707070; }
 
-.click-arrow{
-  display:block;
-  width:150px;
-  height:74px;
-  margin:8px 0 -8px 12px;
-}
-.click-box{
-  position:relative;
-  display:block;
-  width:75%;
-  box-sizing:border-box;
-  margin:0;
-  padding:14px;
-  border:2px solid #af0a0f;
-  border-radius:6px;
-  background:#fff7f7;
-  text-decoration:none;
-  text-align:center;
-}
-.click-box img{
-  display:block;
-  width:100%;
-  height:auto;
-}
-.click-box .click-text{
-  display:block;
-  margin-bottom:8px;
-  color:#af0a0f;
-  font-weight:bold;
-}
 .docs a{
   color:#34345c;
   text-decoration:underline;
 }
 .docs a:hover{ color:#dd0000; }
 .meta{
-  color:#707070;
+  color:#000;
   font-size:.85rem;
 }
