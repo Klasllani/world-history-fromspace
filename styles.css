@@ -1,21 +1,24 @@
 /* styles.css */
 
+html{
+  font-size:20px;
+}
 body{
   background:#eef2ff;
   color:#000;
   font-family:"Times New Roman", Georgia, serif;
-  font-size:16px;
-  line-height:1.4;
+  font-size:1rem;
+  line-height:1.5;
   margin:0;
   padding:0 14px 50px;
 }
-.page{ max-width:700px; margin:0 auto; }
+.page{ max-width:900px; margin:0 auto; }
 
 .board-title{
   text-align:center;
   color:#af0a0f;
   font-weight:bold;
-  font-size:2.5rem;
+  font-size:2.7rem;
   margin:26px 0 4px;
 }
 hr{
