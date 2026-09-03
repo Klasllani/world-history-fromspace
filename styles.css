@@ -1,61 +1,97 @@
-/* styles.css */
+/* styles.css — same text colors, cleaned layout only */
 
-html{
-  font-size:20px;
-}
-body{
-  background:#eef2ff;
-  color:#000;
-  font-family:"Times New Roman", Georgia, serif;
-  font-size:1rem;
-  line-height:1.5;
-  margin:0;
-  padding:0 14px 50px;
-}
-.page{ max-width:900px; margin:0 auto; }
-
-.board-title{
-  text-align:center;
-  color:#af0a0f;
-  font-weight:bold;
-  font-size:2.7rem;
-  margin:26px 0 4px;
-}
-hr{
-  border:0;
-  border-top:1px solid #b7c5d9;
-  margin:16px 0;
+html {
+  font-size: 20px;
 }
 
-.section h2{
-  color:#0f0c5d;
-  font-size:1.5rem;
-  font-weight:bold;
-  margin:6px 0 10px;
-}
-.group{
-  color:#117743;
-  font-size:1.05rem;
-  font-weight:bold;
-  margin:18px 0 4px;
+body {
+  background: #eef2ff;
+  color: #000;
+  font-family: "Times New Roman", Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 14px 50px;
 }
 
-.docs{
-  list-style:none;
-  margin:0 0 6px;
-  padding:0;
+.page {
+  max-width: 900px;
+  margin: 0 auto;
 }
-.docs li{ padding:3px 0; }
-.docs.spaced > li{ padding:6px 0; }
-.docs.spaced .sub li{ padding:2px 0; font-size:.95rem; }
-.docs .sub{ margin:3px 0 0; padding-left:22px; }
 
-.docs a{
-  color:#34345c;
-  text-decoration:underline;
+.board-title {
+  text-align: center;
+  color: #af0a0f;
+  font-weight: bold;
+  font-size: 2.7rem;
+  margin: 26px 0 18px;
 }
-.docs a:hover{ color:#dd0000; }
-.meta{
-  color:#000;
-  font-size:.85rem;
+
+hr {
+  border: 0;
+  border-top: 1px solid #b7c5d9;
+  margin: 16px 0;
+}
+
+.section {
+  background: #ffffff;
+  border: 1px solid #b7c5d9;
+  padding: 16px 22px 18px;
+  margin: 0;
+}
+
+.section h2 {
+  color: #0f0c5d;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 10px;
+}
+
+.group {
+  color: #117743;
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin: 18px 0 4px;
+}
+
+.group:first-of-type {
+  margin-top: 6px;
+}
+
+.docs {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+.docs li {
+  padding: 3px 0;
+}
+
+.docs.spaced > li {
+  padding: 6px 0;
+}
+
+.docs.spaced .sub li {
+  padding: 2px 0;
+  font-size: 0.95rem;
+}
+
+.docs .sub {
+  margin: 3px 0 0;
+  padding-left: 22px;
+}
+
+.docs a {
+  color: #34345c;
+  text-decoration: underline;
+}
+
+.docs a:hover {
+  color: #dd0000;
+}
+
+.meta {
+  color: #000;
+  font-size: 0.85rem;
 }
