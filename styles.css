@@ -82,16 +82,23 @@ hr {
   padding-left: 22px;
 }
 
+.docs .sub li {
+  display: flex;
+  align-items: flex-start;
+}
+
 .arrow {
   color: #000;
   display: inline-block;
   margin-right: 4px;
   font-size: 1.05em;
+  flex: 0 0 auto;
 }
 
 .docs a {
   color: #34345c;
   text-decoration: underline;
+  text-wrap: pretty;
 }
 
 .docs a:hover {
@@ -101,4 +108,22 @@ hr {
 .meta {
   color: #000;
   font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 17px;
+  }
+
+  .board-title {
+    font-size: 2.1rem;
+  }
+
+  .section {
+    padding: 14px 14px 16px;
+  }
+
+  .docs .sub {
+    padding-left: 16px;
+  }
 }
