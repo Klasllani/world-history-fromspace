@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hormuz Bypass Map (2026)</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f4f1ea;
+      font-family: "Times New Roman", Times, serif;
+    }
+    
+    /* Outer map container hiding overflow */
+    #map-wrapper {
+      width: 100%;
+      height: 787px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Crop out top 60px Google header containing profile/account metadata */
+    #map-wrapper iframe {
+      width: 100%;
+      height: 847px;
+      margin-top: -60px;
+      border: 0;
+    }
+
+    #below {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 24px 32px 36px;
+      background: #f4f1ea;
+    }
+
+    #below h1 {
+      margin: 0 0 16px 0;
+      font-size: 30px;
+      font-weight: bold;
+      color: #111;
+      text-align: left;
+    }
+
+    #below p {
+      margin: 0 0 18px 0;
+      font-size: 18px;
+      line-height: 1.65;
+      color: #222;
+      text-indent: 2em;
+      text-align: justify;
+    }
+
+    /* Math Formula Display Styling */
+    .formula {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-style: italic;
+      text-align: center;
+      margin: 18px 0 14px 0;
+      font-size: 19px;
+      font-weight: bold;
+      color: #000;
+      text-indent: 0 !important;
+    }
+
+    /* Variable Sub-bullet List Styling */
+    ul.variable-list {
+      margin: 0 0 22px 2.5em;
+      padding: 0;
+      list-style-type: disc;
+    }
+
+    ul.variable-list li {
+      font-size: 17px;
+      line-height: 1.55;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    ul.variable-list ul {
+      margin: 4px 0 4px 1.5em;
+      padding: 0;
+      list-style-type: circle;
+    }
+
+    ul.variable-list ul li {
+      font-size: 16px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="map-wrapper">
+    <iframe 
+      src="https://www.google.com/maps/d/embed?mid=1DRVEtfi1Gj2z7TKzo8v9fm7KhpmMsp8" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div id="below">
+    <h1>Hormuz Bypass Map (2026)</h1>
+    
+    <p>
+      This spatial process map models crude transport phenomena from Gas-Oil Separation Plants (GOSP) down to Single Point Mooring (SPM) offshore export terminals. Under hypothetical geopolitical closures or flow blockages within the Strait of Hormuz chokepoint, published hydrocarbon streams rely on two primary overland diversion pathways out of the western Persian Gulf basin: westward movement along the East-West Crude Oil Pipeline (Petroline) terminating at Yanbu on the Red Sea, and eastward transport through the Abu Dhabi Crude Oil Pipeline (ADCOP; Bab-Habshan-Fujairah pipeline) ending at Fujairah on the Gulf of Oman. Spatial nodes represent processing plants, oilfields, marine terminals, and maritime chokepoints sourced from public site registries, while linear features strictly delineate named mainlines. The embedded interactive interface integrates all underlying spatial and engineering data directly into each vector feature; selecting any individual node marker or pipeline segment opens an attribute popup detailing specific facility identifiers, trunkline names, nominal pipe diameters, operational nameplate capacities, and crude grade parameters. This visualization serves as a high-level transport architecture model and does not represent Piping and Instrumentation Diagrams (P&amp;ID), mechanical engineering detail drawings, control alarm setpoints, or infrastructure risk assets.
+    </p>
+
+    <p>
+      From a unit operations perspective, raw production moves sequentially through a rigorous upstream-to-downstream fluid handling hierarchy tailored to specific crude assay grades. Production originates at wellhead manifolds, feeding multi-stage Gas-Oil Separation Plants (GOSP) where multi-stage flash vaporization vessels depressurize the fluid matrix to evolve dissolved light hydrocarbon gases (C₁–C₄). Ultra-light streams like Shaybah (Arabian Super Light, ~50° API) and Ras Laffan exports (Qatar Condensate, &gt;55° API) require higher-stage gas-separation trains and stabilization columns to strip off volatile fractions and lower the Reid Vapor Pressure (RVP; a standard measure of vapor volatility). Conversely, heavy, high-viscosity feeds such as Safaniya (Arabian Heavy, ~27° API) require thermal input and specialized electrostatic desalting units to break heavy water-in-oil emulsions and drop out corrosive brine salts. Baseline Arabian Light (~33° API) serves as the primary regional benchmark, undergoing standard hydrogen sulfide (H₂S) stripping for sweetening. Once stabilized, crude streams are pressurized into cross-country mainlines via intermediate booster pump stations, metered at coastal terminal custody transfer skids, and pumped through subsea pipelines to Single Point Mooring (SPM) calm buoys for deep-water Very Large Crude Carrier (VLCC) offloading.
+    </p>
+
+    <p>
+      In response to regional security vulnerabilities and potential blockades of the Strait of Hormuz, Saudi Aramco and regional operators maintain strategic operational flexibility. By expanding cross-peninsula transmission capacity on the 48/56-inch East-West Petroline corridor, utilizing Drag-Reducing Agents (DRA; specialized chemical polymers added to fluid streams to reduce turbulent friction inside pipes) to optimize hydraulic throughput, and expanding Red Sea loading berths, Saudi Arabia can divert up to 5.0 to 7.0 million barrels per day (MMbpd) of stabilized crude away from Gulf maritime bottlenecks directly into Red Sea shipping lanes.
+    </p>
+
+    <p>
+      Pipeline network topology and associated trunkline attributes—including nominal pipe diameters and operational nameplate volumetric capacities—are derived from the Global Energy Monitor (GEM) Global Oil Infrastructure Tracker (GOIT) dataset (June 2026 tabular metrics; July 21, 2026 spatial geometry release, licensed under Creative Commons CC BY 4.0). Mainline features extracted from the dataset include the East-West Crude Oil Pipeline, Shaybah-Abqaiq Oil Pipeline, Bab-Habshan-Fujairah Oil Pipeline, Abqaiq Plants-Qatif Junction Oil Pipelines, and Qatif Junction-Juaymah Terminal Oil Pipelines. Select filtering isolates liquid hydrocarbon lines currently operating under active crude oil service; dual Natural Gas Liquids (NGL) gathering systems and secondary field lines are excluded from this public layer.
+    </p>
+
+    <p>
+      Thermophysical fluid calculations convert standard American Petroleum Institute (API) gravity values to dimensionless specific gravity (SG) at standard reference conditions (60 °F / 15.56 °C). A hydrometer is a weighted, sealed glass instrument calibrated to float vertically in liquid; because dense fluids exert higher buoyancy forces, light oils allow the hydrometer to sink deeper, providing a direct visual specific gravity reading along stem tick marks. The numerical constants 141.5 and 131.5 are empirical parameters derived historically by the API and the National Institute of Standards and Technology (NIST; formerly National Bureau of Standards) to convert non-linear hydrometer scale readings into a linear gravity index that expands numerical scale resolution across lighter crude fractions:
+    </p>
+
+    <div class="formula">
+      SG = 141.5 / (°API + 131.5)
+    </div>
+
+    <ul class="variable-list">
+      <li><strong>SG</strong>: Specific gravity of the crude hydrocarbon stream relative to pure water at 60 °F [dimensionless]</li>
+      <li><strong>°API</strong>: American Petroleum Institute gravity index [degrees API]</li>
+      <li><strong>141.5</strong>: Empirical hydrometer scale modulus set by historical API/NIST standard calibration</li>
+      <li><strong>131.5</strong>: Empirical baseline offset constant establishing the 1.000 SG reference point for pure water (10° API)</li>
+    </ul>
+
+    <p>
+      Unlike general physics contexts that utilize water's maximum density state at 4 °C (1000 kg/m³), standard petroleum custody transfer standards—governed by the API Manual of Petroleum Measurement Standards (MPMS) and ASTM International (formerly American Society for Testing and Materials, ASTM D1250)—mandate a reference baseline of 60 °F (15.56 °C). As pure water undergoes slight thermal expansion between 4 °C and 15.56 °C, its density drops to the accepted reference value of 999.016 kg/m³. Hydrocarbon liquid density is evaluated accordingly by scaling stream specific gravity against this exact reference baseline:
+    </p>
+
+    <div class="formula">
+      ρ = SG × ρ_water
+    </div>
+
+    <ul class="variable-list">
+      <li><strong>ρ</strong>: Hydrocarbon liquid density [kg/m³]</li>
+      <li><strong>SG</strong>: Calculated crude oil specific gravity [dimensionless]</li>
+      <li><strong>ρ_water</strong>: Accepted density of pure water at 60 °F / 15.56 °C per API MPMS / ASTM D1250 [999.016 kg/m³]</li>
+    </ul>
+
+    <p>
+      Volumetric throughput rates are evaluated exclusively on network segments with confirmed public nameplate capacity data. Linear flow velocities are calculated by applying the fluid continuity equation to trunklines featuring uniform internal diameters and fixed capacities:
+    </p>
+
+    <div class="formula">
+      v = Q / A = (4 × Q) / (π × d²)
+    </div>
+
+    <ul class="variable-list">
+      <li><strong>v</strong>: Mean inline axial fluid velocity [m/s]</li>
+      <li><strong>Q</strong>: Volumetric throughput flow rate [m³/s]
+        <ul>
+          <li>Converted from operational capacity metrics [bpd (barrels per day) or m³/day]</li>
+        </ul>
+      </li>
+      <li><strong>A</strong>: Cross-sectional pipe internal flow area [m²]</li>
+      <li><strong>d</strong>: Internal pipe diameter [m]</li>
+    </ul>
+
+    <p>
+      Mass balance calculations for internal plant operations omit unpublished inlet rates and stream split ratios at the Abqaiq processing hub, as these metrics rely on proprietary estimates rather than open-source records and are excluded from the Keyhole Markup Language Zip (KMZ) data export layer. Primary infrastructure geometries and attribute tables originate from the Global Energy Monitor (GEM) Global Oil Infrastructure Tracker (GOIT) release (`GEM-GOIT-Oil-NGL-Pipelines-2026-06.xlsx` and `GEM-GOIT-Oil-NGL-Pipelines-2026-07-21.gpkg`), distributed under Creative Commons CC BY 4.0, rendered over a standard Google Maps roadmap basemap.
+    </p>
+  </div>
+
+</body>
+</html>
